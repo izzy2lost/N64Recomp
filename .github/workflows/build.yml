@@ -17,14 +17,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          submodules: recursive  # Ensures submodules are cloned as well
-
-      # Step 2: Set up CMake (already available on Windows runners)
-      - name: Set up CMake
-        uses: lukka/get-cmake-action@v2
-        with:
-          cmake-version: '3.20'
-
+          submodules: recursive 
+          
+      # Step 2: Setup cmake
+      - name: get-cmake
+        uses: lukka/get-cmake@v3.31.6
+  
       # Step 3: Create build directory
       - name: Create build directory
         run: mkdir build
@@ -46,4 +44,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: n64-recompiled-rom
-          path: build/*.z64  # Adjust this path based on where the ROM is saved
+          path: build/*.z64 

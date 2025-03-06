@@ -1,0 +1,49 @@
+name: Build N64Recomp on Windows
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      # Step 1: Checkout the repository with GitHub Actions v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive  # Ensures submodules are cloned as well
+
+      # Step 2: Set up CMake (already available on Windows runners)
+      - name: Set up CMake
+        uses: lukka/get-cmake-action@v2
+        with:
+          cmake-version: '3.20'
+
+      # Step 3: Create build directory
+      - name: Create build directory
+        run: mkdir build
+
+      # Step 4: Configure project with Visual Studio 2022
+      - name: Configure project with CMake (Visual Studio 2022)
+        run: |
+          cd build
+          cmake -G "Visual Studio 17 2022" ..
+
+      # Step 5: Build the project
+      - name: Build project
+        run: |
+          cd build
+          cmake --build . --config Release
+
+      # Optional: Save build artifacts (e.g., ROMs or binaries) using GitHub Actions v4
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: n64-recompiled-rom
+          path: build/*.z64  # Adjust this path based on where the ROM is saved

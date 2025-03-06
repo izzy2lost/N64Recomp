@@ -39,9 +39,9 @@ jobs:
           cd build
           cmake --build . --config Release
 
-      # Optional: Save build artifacts (e.g., ROMs or binaries) using GitHub Actions v4
-      - name: Upload build artifacts
+      # Step 6: Upload all .exe files from the build folder as artifacts
+      - name: Upload build artifacts (all .exe files)
         uses: actions/upload-artifact@v4
         with:
-          name: n64-recompiled-rom
-          path: build/*.z64 
+          name: n64-recompiled-exes
+          path: build/Release/*.exe  # Adjust if the .exe files are in a different subdirectory
